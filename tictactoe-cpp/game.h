@@ -12,11 +12,11 @@ public:
 private:
 
 	// zmienne
-	char c1, tab[3][3]; //tablica u¿ywana w grze
-	bool err, firstmov,turn,finish;
-	int c,l;
+	char c1, tab[3][3]; // game tab
+	bool err, firstmov,turn; // 0 = X, 1 = O;
+	int c,l, finish; // finish states: 0 - no end-game situation, 1 - draw, 2 - win;
 
 	// funkcje
-	bool check();
+	int check();
 
 };
