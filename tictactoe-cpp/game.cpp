@@ -73,7 +73,7 @@ void game::updatescreen()
 void game::gameengine() // game "engine"
 {
 	system( "CLS" );
-	cout << "= Prepare for the game... ===============\n\n";
+	cout << "======== Prepare for the game... ========\n\n";
 	if ( firstmov == 0 ) // changes begginer every round
 	{
 		firstmov = 1;
@@ -159,7 +159,7 @@ void game::gameengine() // game "engine"
 		}
 	}
 	updatescreen(); // displays last move before results
-	cout << "\n= Results ===============================\n";
+	cout << "\n=============== Results ================\n";
 	switch ( finish )
 	{
 	case 1:
