@@ -9,22 +9,22 @@ class settings
 
 public:
 
-	//zmienne
+	//variables
 	std::string nickname;
 	int score;
 	char appdata[MAX_PATH];
 
-	//funkcje
+	//functions
 	void load();
 	void options();
 	settings();
 
 private:
 
-	//zmienne
+	//variables
 	char savefile[MAX_PATH],savefileloc[MAX_PATH];
 
-	//funkcje
+	//functions
 	void create();
 	bool save();
 

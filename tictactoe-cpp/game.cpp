@@ -57,6 +57,18 @@ int game::check()
 	return result;
 }
 
+void game::updatescreen()
+{
+	system( "CLS" );
+	cout << "     A   B   C\n"; // display game state
+	cout << "   _____________\n";
+	cout << " 1 | " << tab[0][0] << " | " << tab[1][0] << " | " << tab[2][0] << " |\n";
+	cout << "   |---|---|---|\n";
+	cout << " 2 | " << tab[0][1] << " | " << tab[1][1] << " | " << tab[2][1] << " |\n";
+	cout << "   |---|---|---|\n";
+	cout << " 3 | " << tab[0][2] << " | " << tab[1][2] << " | " << tab[2][2] << " |\n";
+	cout << "   -------------\n\n";
+}
 
 void game::gameengine() // game "engine"
 {
@@ -80,15 +92,7 @@ void game::gameengine() // game "engine"
 	finish = 0;
 	while ( finish == 0 )
 	{
-		system( "CLS" );
-		cout << "     A   B   C\n"; // display game state
-		cout << "   _____________\n";
-		cout << " 1 | " << tab[0][0] << " | " << tab[1][0] << " | " << tab[2][0] << " |\n";
-		cout << "   |---|---|---|\n";
-		cout << " 2 | " << tab[0][1] << " | " << tab[1][1] << " | " << tab[2][1] << " |\n";
-		cout << "   |---|---|---|\n";
-		cout << " 3 | " << tab[0][2] << " | " << tab[1][2] << " | " << tab[2][2] << " |\n";
-		cout << "   -------------\n\n";
+		updatescreen();
 		cout << "[A, B, C] ? ";
 		do // select column
 		{
@@ -154,6 +158,7 @@ void game::gameengine() // game "engine"
 			anykey();
 		}
 	}
+	updatescreen(); // displays last move before results
 	cout << "\n= Results ===============================\n";
 	switch ( finish )
 	{
@@ -161,7 +166,7 @@ void game::gameengine() // game "engine"
 		cout << " It\'s a draw!\n\n";
 		break;
 	case 2:
-		if ( turn == 0 ) // because turns hawe swapped
+		if ( turn == 0 ) // because turns have swapped
 			cout << " Circle wins!\n\n";
 		else
 			cout << " Cross wins!\n\n";

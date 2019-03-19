@@ -1,6 +1,6 @@
-//port kika z batcha na c++
 #define BOOST_FILESYSTEM_NO_DEPRECATED
 #define _CRT_SECURE_NO_WARNINGS
+
 #include <iostream>
 #include <fstream>
 #include <conio.h>
@@ -30,13 +30,13 @@ void newgame( int gametype ) // sts up a new game
 	while ( quit == false )
 	{
 		int rounds = 0;
-		while ( rounds <= 0 || rounds >= 1000 )
+		while ( rounds <= 0 || rounds >= 1000 ) // dialog will be repeating until you type correct number
 		{
 			system( "CLS" );
 			cout << "= New game ==============================\n\n";
 			cout << " How many rounds would you like to play?\n\n? ";
 			cin >> rounds;
-			if ( rounds > 0 && rounds < 1000 )
+			if ( rounds > 0 && rounds < 1000 ) // game loop (kind of)
 			{
 				game theGame;
 				for ( int i = 0; i < rounds; i++ )
@@ -50,19 +50,25 @@ void newgame( int gametype ) // sts up a new game
 				anykey();
 			}
 		}
-		system( "CLS" );
-		cout << " Do you want to play again? [Y/N]\n\n? ";
-		switch ( toupper( _getch() ) )
+
+		bool quit2 = false;
+		while ( quit2 == false )
 		{
-		case 'Y':
-			break;
-		case 'N':
-			quit = true;
-			break;
-		default:
-			cout << "You pressed wrong key!\n\n";
-			anykey();
-			break;
+			system( "CLS" );
+			cout << "= Finish ================================\n\n";
+			cout << " Do you want to play again? [Y/N]\n\n? ";
+			switch ( toupper( _getch() ) )
+			{
+			case 'Y':
+				quit2 = true;
+				break;
+			case 'N':
+				quit = true;
+				quit2 = true;
+				break;
+			default:
+				break;
+			}
 		}
 	}
 }
@@ -83,7 +89,9 @@ void mainmenu()
 		//cout << "M = Multiplayer\n";
 		cout << " 2. Options\n\n";
 		cout << "Press ESC to quit the game\n\n? ";
-		switch ( _getch() )
+
+		bool quit2 = false;
+		switch ( _getch() ) // capturing direct input from keyboard
 		{
 		case '1':
 			newgame( 0 );
@@ -95,25 +103,27 @@ void mainmenu()
 			theSettings.options();
 			break;
 		case 27:
-			system( "CLS" );
-			cout << "= Quit ==================================\n\n";
-			cout << " Are you sure? [Y/N]\n\n? ";
-			switch ( toupper( _getch() ) )
+			while ( quit2 == false )
 			{
-			case 'Y':
-				quit = true;
-				break;
-			case 'N':
-				break;
-			default:
-				cout << "You pressed wrong key!\n\n";
-				anykey();
-				break;
+				system( "CLS" );
+				cout << "= Quit ==================================\n\n";
+				cout << " Are you sure? [Y/N]\n\n? ";
+
+				switch ( toupper( _getch() ) )
+				{
+				case 'Y':
+					quit = true;
+					quit2 = true;
+					break;
+				case 'N':
+					quit2 = true;
+					break;
+				default:
+					break;
+				}
 			}
 			break;
 		default:
-			cout << "You pressed wrong key!\n\n";
-			anykey();
 			break;
 		}
 	}
@@ -127,8 +137,7 @@ int main( int *argc,char argv[] )
 	system( "MODE CON:COLS=41 LINES=15" ); //setting window size
 	system( "title Tic-Tac-Toe [TEST BUILD]" ); //seting window title
 
-	theSettings.load(); // loading settings
-	cout << theSettings.nickname;
+	//theSettings.load(); // loading settings
 	mainmenu();
 	return 0;
 }
@@ -178,21 +187,22 @@ void settings::options() // options menu
 		cout << " 1. Reconfigure\n";
 		cout << " 2. Save\n\n";
 		cout << "To go back to main menu press ESC\n\n? ";
+
 		switch ( _getch() )
 		{
 		case '1':
 			create();
 			break;
 		case '2':
-			if ( save() )
-				cout << "Unable to save :(\n\n";
+			/*if ( save() )
+				cout << "Unable to save :(\n\n";*/
+			cout << "Not available for now :(\n\n";
+			anykey();
 			break;
 		case 27:
 			quit = true;
 			break;
 		default:
-			cout << "You pressed wrong key!\n\n";
-			anykey();
 			break;
 		}
 	}
