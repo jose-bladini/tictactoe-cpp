@@ -133,21 +133,28 @@ void game::gameengine() // game "engine"
 				break;
 			}
 		} while ( err == 1 );
-		if ( turn == 0 ) // places x or o, checks if there is an end-game situation anc swaps turns
+		if ( tab[c][l] != 'X' && tab[c][l] != 'O' )
 		{
-			tab[c][l] = 'X';
-			finish = check();
-			turn = 1;
+			if ( turn == 0 ) // places x or o, checks if there is an end-game situation anc swaps turns
+			{
+				tab[c][l] = 'X';
+				finish = check();
+				turn = 1;
+			}
+			else
+			{
+				tab[c][l] = 'O';
+				finish = check();
+				turn = 0;
+			}
 		}
 		else
 		{
-			tab[c][l] = 'O';
-			finish = check();
-			turn = 0;
+			cout << "\n\nCell not empty\n\n";
+			anykey();
 		}
 	}
-	system( "CLS" );
-	cout << "= Results ===============================\n\n";
+	cout << "\n= Results ===============================\n";
 	switch ( finish )
 	{
 	case 1:
