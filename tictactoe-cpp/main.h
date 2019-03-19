@@ -1,5 +1,9 @@
 #pragma once
 
+#include <Windows.h>
+
+void anykey();
+
 class settings
 {
 
@@ -12,7 +16,6 @@ public:
 
 	//funkcje
 	void load();
-	bool save();
 	void options();
 	settings();
 
@@ -23,5 +26,6 @@ private:
 
 	//funkcje
 	void create();
+	bool save();
 
 };

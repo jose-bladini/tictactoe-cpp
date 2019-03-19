@@ -16,47 +16,52 @@
 using namespace std;
 
 // defining global variables and objects
-char wybor;
 settings theSettings;
 
 void anykey()
 {
-	cout << "Press any key...";
+	std::cout << "Press any key...";
 	_getch();
 }
 
-void newgame( int gametype ) // ustawienie opcji dla nowej gry
+void newgame( int gametype ) // sts up a new game
 {
-	bool quitn = false;
-	while ( quitn == false )
+	bool quit = false;
+	while ( quit == false )
 	{
 		int rounds = 0;
 		while ( rounds <= 0 || rounds >= 1000 )
 		{
+			system( "CLS" );
 			cout << "= New game ==============================\n\n";
 			cout << " How many rounds would you like to play?\n\n? ";
 			cin >> rounds;
-			system( "CLS" );
 			if ( rounds > 0 && rounds < 1000 )
 			{
 				game theGame;
-				cout << theGame.gameengine( rounds ) << endl;
+				for ( int i = 0; i < rounds; i++ )
+				{
+					theGame.gameengine();
+				}
 			}
 			else
+			{
 				cout << "You typed in a wrong number!\n\n";
+				anykey();
+			}
 		}
-		cout << " Do you want to play again? [Y/N]\n\n? ";
-		wybor = _getch();
 		system( "CLS" );
-		switch ( toupper( wybor ) )
+		cout << " Do you want to play again? [Y/N]\n\n? ";
+		switch ( toupper( _getch() ) )
 		{
 		case 'Y':
 			break;
 		case 'N':
-			quitn = 1;
+			quit = true;
 			break;
 		default:
 			cout << "You pressed wrong key!\n\n";
+			anykey();
 			break;
 		}
 	}
@@ -65,8 +70,9 @@ void newgame( int gametype ) // ustawienie opcji dla nowej gry
 void mainmenu()
 {
 	bool quit = false;
-	while ( quit == false ) // pêtla zapobiegaj¹ca zakoñczeniu programu
+	while ( quit == false )
 	{
+		system( "CLS" ); //clear output
 		cout << "=========================================\n";
 		cout << "============== TIC TAC TOE ==============\n";
 		cout << "=========================================\n";
@@ -77,9 +83,7 @@ void mainmenu()
 		//cout << "M = Multiplayer\n";
 		cout << " 2. Options\n\n";
 		cout << "Press ESC to quit the game\n\n? ";
-		wybor = _getch();
-		system( "CLS" );
-		switch ( wybor )
+		switch ( _getch() )
 		{
 		case '1':
 			newgame( 0 );
@@ -91,11 +95,10 @@ void mainmenu()
 			theSettings.options();
 			break;
 		case 27:
+			system( "CLS" );
 			cout << "= Quit ==================================\n\n";
 			cout << " Are you sure? [Y/N]\n\n? ";
-			wybor = _getch();
-			system( "CLS" );
-			switch ( toupper( wybor ) )
+			switch ( toupper( _getch() ) )
 			{
 			case 'Y':
 				quit = true;
@@ -104,11 +107,13 @@ void mainmenu()
 				break;
 			default:
 				cout << "You pressed wrong key!\n\n";
+				anykey();
 				break;
 			}
 			break;
 		default:
 			cout << "You pressed wrong key!\n\n";
+			anykey();
 			break;
 		}
 	}
@@ -119,26 +124,12 @@ int main( int *argc,char argv[] )
 	srand( time( NULL ) );
 
 	//cmd stuff
-	system( "MODE CON:COLS=41 LINES=15" );
-	system( "title Tic-Tac-Toe [TEST BUILD]" );
+	system( "MODE CON:COLS=41 LINES=15" ); //setting window size
+	system( "title Tic-Tac-Toe [TEST BUILD]" ); //seting window title
 
 	theSettings.load(); // loading settings
 	cout << theSettings.nickname;
-	//mainmenu();
-	cout << "Zapisac? [t/n]\n";
-	switch ( _getch() )
-	{
-	case 't':
-		if ( theSettings.save() )
-		{
-			cout << "Zapis niemozliwy\n";
-		}
-		break;
-	default:
-		cout << "ok\n";
-		break;
-	}
-	anykey();
+	mainmenu();
 	return 0;
 }
 
@@ -152,7 +143,7 @@ void settings::load()
 	}
 	else
 	{
-		settings::create();
+		create();
 	}
 }
 
@@ -177,37 +168,31 @@ bool settings::save()
 	}
 }
 
-void settings::options() // menu opcji
+void settings::options() // options menu
 {
-	bool quito = false;
-	while ( quito == false ) // pêtla zapobiegaj¹ca wyjœciu
+	bool quit = false;
+	while ( quit == false )
 	{
-		cout << "= Options ===============================\n\n";
-		cout << " 1. Language\n";
-		cout << " 2. Difficulty\n";
-		cout << " 3. Color\n\n";
-		cout << "To go back to main menu press ESC\n\n? ";
-		wybor = _getch();
 		system( "CLS" );
-		switch ( wybor )
+		cout << "= Options ===============================\n\n";
+		cout << " 1. Reconfigure\n";
+		cout << " 2. Save\n\n";
+		cout << "To go back to main menu press ESC\n\n? ";
+		switch ( _getch() )
 		{
 		case '1':
-			//lang();
-			cout << "Not supported for now\n\n";
+			create();
 			break;
 		case '2':
-			//wpt();
-			cout << "Not supported for now\n\n";
-			break;
-		case '3':
-			//kl();
-			cout << "Not supported for now\n\n";
+			if ( save() )
+				cout << "Unable to save :(\n\n";
 			break;
 		case 27:
-			quito = true;
+			quit = true;
 			break;
 		default:
 			cout << "You pressed wrong key!\n\n";
+			anykey();
 			break;
 		}
 	}
@@ -215,14 +200,15 @@ void settings::options() // menu opcji
 
 void settings::create()
 {
-	cout << "= Configuration ========================\n";
-	cout << " What\'s your nickname?\n :";
+	//this initiates configuration if configuration file cannot be loaded
+	system( "CLS" );
+	cout << "= Configuration ========================\n\n";
+	cout << " What\'s your nickname?\n\n? ";
 	cin >> nickname;
 	system( "CLS" );
 	cout << "= Configuration ========================\n\n";
-	cout << " Hello " << nickname << "!\n";
+	cout << " Hello " << nickname << "!\n\n";
 	anykey();
-	system( "CLS" );
 }
 
 settings::settings()
