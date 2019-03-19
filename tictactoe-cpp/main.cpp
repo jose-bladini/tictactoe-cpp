@@ -33,7 +33,7 @@ void newgame( int gametype ) // sts up a new game
 		while ( rounds <= 0 || rounds >= 1000 ) // dialog will be repeating until you type correct number
 		{
 			system( "CLS" );
-			cout << "= New game ==============================\n\n";
+			cout << "================ New game ===============\n\n";
 			cout << " How many rounds would you like to play?\n\n? ";
 			cin >> rounds;
 			if ( rounds > 0 && rounds < 1000 ) // game loop (kind of)
@@ -55,7 +55,7 @@ void newgame( int gametype ) // sts up a new game
 		while ( quit2 == false )
 		{
 			system( "CLS" );
-			cout << "= Finish ================================\n\n";
+			cout << "================= Finish =================\n\n";
 			cout << " Do you want to play again? [Y/N]\n\n? ";
 			switch ( toupper( _getch() ) )
 			{
@@ -82,8 +82,8 @@ void mainmenu()
 		cout << "=========================================\n";
 		cout << "============== TIC TAC TOE ==============\n";
 		cout << "=========================================\n";
-		cout << "================ v 0.1 ==================\n";
-		cout << "================ ALPHA ==================\n";
+		cout << "================= v 0.1 =================\n";
+		cout << "================= ALPHA =================\n";
 		cout << "=========================================\n\n";
 		cout << " 1. New Game\n";
 		//cout << "M = Multiplayer\n";
@@ -106,7 +106,7 @@ void mainmenu()
 			while ( quit2 == false )
 			{
 				system( "CLS" );
-				cout << "= Quit ==================================\n\n";
+				cout << "================= Quit ==================\n\n";
 				cout << " Are you sure? [Y/N]\n\n? ";
 
 				switch ( toupper( _getch() ) )
@@ -183,7 +183,7 @@ void settings::options() // options menu
 	while ( quit == false )
 	{
 		system( "CLS" );
-		cout << "= Options ===============================\n\n";
+		cout << "=============== Options ===============\n\n";
 		cout << " 1. Reconfigure\n";
 		cout << " 2. Save\n\n";
 		cout << "To go back to main menu press ESC\n\n? ";
@@ -212,11 +212,11 @@ void settings::create()
 {
 	//this initiates configuration if configuration file cannot be loaded
 	system( "CLS" );
-	cout << "= Configuration ========================\n\n";
+	cout << "============= Configuration ==============\n\n";
 	cout << " What\'s your nickname?\n\n? ";
 	cin >> nickname;
 	system( "CLS" );
-	cout << "= Configuration ========================\n\n";
+	cout << "============= Configuration ==============\n\n";
 	cout << " Hello " << nickname << "!\n\n";
 	anykey();
 }
