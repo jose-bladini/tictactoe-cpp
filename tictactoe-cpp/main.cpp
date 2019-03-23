@@ -55,7 +55,7 @@ void newgame( int gametype ) // sts up a new game
 		while ( quit2 == false )
 		{
 			system( "CLS" );
-			cout << "================= Finish =================\n\n";
+			cout << "================ Finish =================\n\n";
 			cout << " Do you want to play again? [Y/N]\n\n? ";
 			switch ( toupper( _getch() ) )
 			{
@@ -137,8 +137,9 @@ int main( int *argc,char argv[] )
 	system( "MODE CON:COLS=41 LINES=15" ); //setting window size
 	system( "title Tic-Tac-Toe [TEST BUILD]" ); //seting window title
 
-	//theSettings.load(); // loading settings
+	theSettings.load(); // loading settings
 	mainmenu();
+
 	return 0;
 }
 
@@ -148,6 +149,57 @@ void settings::load()
 	setfile.open( savefile );
 	if ( setfile )
 	{
+		string tmp;
+		int number;
+		bool logical;
+		while ( setfile ) // repeat until end of file
+		{
+			setfile >> tmp;
+
+			/**********************************************************************/
+			/********************* VARIABLE SEARCH TEMPLATE ***********************/
+			/**********************************************************************/
+			//if ( tmp == "variable" ) // search for matching name
+			//{
+			//	setfile >> tmp;
+			//	if ( tmp == "=" ) // only proceed if equals sign is after the name
+			//	{
+			//		setfile >> tmp;
+			//		variable = tmp; // finally, wirte value to variable
+			//	}
+			//}
+
+			if ( tmp == "nickname" )
+			{
+				setfile >> tmp;
+				if ( tmp == "=" )
+				{
+					setfile >> tmp;
+					nickname = tmp;
+				}
+			}
+
+			if ( tmp == "score" )
+			{
+				setfile >> tmp;
+				if ( tmp == "=" )
+				{
+					setfile >> number;
+					score = number;
+				}
+			}
+
+			if ( tmp == "autosave" )
+			{
+				setfile >> tmp;
+				if ( tmp == "=" )
+				{
+					setfile >> logical;
+					autosave = logical;
+				}
+			}
+
+		}
 		setfile.close();
 	}
 	else
@@ -168,6 +220,7 @@ bool settings::save()
 		setfile << "version = 1" << endl; //this is configuration file version, not game version
 		setfile << "nickname = " << nickname << endl;
 		setfile << "score = " << score << endl;
+		setfile << "autosave = " << autosave << endl;
 		setfile.close();
 		return false;
 	}
@@ -183,7 +236,7 @@ void settings::options() // options menu
 	while ( quit == false )
 	{
 		system( "CLS" );
-		cout << "=============== Options ===============\n\n";
+		cout << "================ Options ================\n\n";
 		cout << " 1. Reconfigure\n";
 		cout << " 2. Save\n\n";
 		cout << "To go back to main menu press ESC\n\n? ";
@@ -194,10 +247,11 @@ void settings::options() // options menu
 			create();
 			break;
 		case '2':
-			/*if ( save() )
-				cout << "Unable to save :(\n\n";*/
-			cout << "Not available for now :(\n\n";
-			anykey();
+			if ( save() )
+			{
+				cout << "Unable to save :(\n\n";
+				anykey();
+			}
 			break;
 		case 27:
 			quit = true;
@@ -212,13 +266,38 @@ void settings::create()
 {
 	//this initiates configuration if configuration file cannot be loaded
 	system( "CLS" );
-	cout << "============= Configuration ==============\n\n";
+	cout << "============= Configuration =============\n\n";
 	cout << " What\'s your nickname?\n\n? ";
 	cin >> nickname;
 	system( "CLS" );
-	cout << "============= Configuration ==============\n\n";
-	cout << " Hello " << nickname << "!\n\n";
-	anykey();
+	cout << "============= Configuration =============\n\n";
+	cout << " Hello " << nickname << "!\n";
+	cout << " Would you like to enable autosave? [Y/N]\n\n? ";
+	bool quit = false;
+
+	while ( quit == false )
+	{
+		switch ( toupper( _getch() ) )
+		{
+		case 'Y':
+			autosave = true;
+			quit = true;
+			break;
+		case 'N':
+			autosave = false;
+			quit = true;
+			break;
+		default:
+			break;
+		}
+	}
+
+	score = 0;
+	if ( save() )
+	{
+		cout << "Unable to save :(\n\n";
+		anykey();
+	}
 }
 
 settings::settings()

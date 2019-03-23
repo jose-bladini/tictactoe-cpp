@@ -93,6 +93,10 @@ void game::gameengine() // game "engine"
 	while ( finish == 0 )
 	{
 		updatescreen();
+		if ( turn == 0 )
+			cout << "Cross, it's your move!\n";
+		else
+			cout << "Circle, it's your move!\n";
 		cout << "[A, B, C] ? ";
 		do // select column
 		{
