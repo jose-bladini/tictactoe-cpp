@@ -12,12 +12,10 @@ public:
 	//variables
 	std::string nickname;
 	int score;
-	bool autosave;
 	char appdata[MAX_PATH];
 
 	//functions
 	void load();
-	bool save();
 	void options();
 	settings();
 
@@ -28,5 +26,6 @@ private:
 
 	//functions
 	void create();
+	bool save();
 
 };
