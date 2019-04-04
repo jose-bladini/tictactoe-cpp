@@ -3,7 +3,7 @@
 #include <Windows.h>
 
 void anykey();
-
+int single;
 class settings
 {
 

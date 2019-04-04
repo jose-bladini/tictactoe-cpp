@@ -3,7 +3,10 @@
 #include <conio.h>
 #include "game.h"
 #include "main.h"
+#include <ctime>
 using namespace std;
+
+
 
 int game::check()
 {
@@ -82,7 +85,7 @@ void game::gameengine() // game "engine"
 	else
 	{
 		firstmov = 0;
-		cout << " Cross begins!\n\n";
+		cout << "Cross begins!\n\n";
 	}
 	turn = firstmov;
 	anykey();
@@ -90,72 +93,96 @@ void game::gameengine() // game "engine"
 		for ( int k = 0; k <= 2; k++ )
 			tab[j][k] = ' ';
 	finish = 0;
-	while ( finish == 0 )
+	while (finish == 0)
 	{
-		updatescreen();
-		cout << "[A, B, C] ? ";
-		do // select column
+		if (single == 1 || turn == 1)
 		{
-			switch ( toupper( _getch() ) )
+			updatescreen();
+			cout << "[A, B, C] ? ";
+			do // select column
 			{
-			case 'A':
-				c = 0;
-				err = 0;
-				break;
-			case 'B':
-				c = 1;
-				err = 0;
-				break;
-			case 'C':
-				c = 2;
-				err = 0;
-				break;
-			default:
-				err = 1;
-				break;
-			}
-		} while ( err == 1 );
-		cout << "\n[1, 2, 3] ? ";
-		do // select row
+				switch (toupper(_getch()))
+				{
+				case 'A':
+					c = 0;
+					err = 0;
+					break;
+				case 'B':
+					c = 1;
+					err = 0;
+					break;
+				case 'C':
+					c = 2;
+					err = 0;
+					break;
+				default:
+					err = 1;
+					break;
+				}
+			} while (err == 1);
+			cout << "\n[1, 2, 3] ? ";
+			do // select row
+			{
+				switch (_getch())
+				{
+				case '1':
+					l = 0;
+					err = 0;
+					break;
+				case '2':
+					l = 1;
+					err = 0;
+					break;
+				case '3':
+					l = 2;
+					err = 0;
+					break;
+				default:
+					err = 1;
+					break;
+				}
+
+			} while (err == 1);
+
+		}
+		if (single == 2 && turn == 0)
 		{
-			switch ( _getch() )
-			{
-			case '1':
-				l = 0;
-				err = 0;
-				break;
-			case '2':
-				l = 1;
-				err = 0;
-				break;
-			case '3':
-				l = 2;
-				err = 0;
-				break;
-			default:
-				err = 1;
-				break;
-			}
-		} while ( err == 1 );
+			ai();
+		}
 		if ( tab[c][l] != 'X' && tab[c][l] != 'O' )
 		{
-			if ( turn == 0 ) // places x or o, checks if there is an end-game situation anc swaps turns
+			if (single == 1)
 			{
-				tab[c][l] = 'X';
-				finish = check();
-				turn = 1;
+				if (turn == 0) // places x or o, checks if there is an end-game situation anc swaps turns
+				{
+					tab[c][l] = 'X';
+					finish = check();
+					turn = 1;
+				}
+				else
+				{
+					tab[c][l] = 'O';
+					finish = check();
+					turn = 0;
+				}
 			}
 			else
 			{
-				tab[c][l] = 'O';
-				finish = check();
-				turn = 0;
+				if ( turn == 1)
+				{
+					tab[c][l] = 'O';
+					finish = check();
+					turn = 0;
+				}
 			}
 		}
 		else
 		{
-			cout << "\n\nCell not empty\n\n";
-			anykey();
+			if (single == 2 && turn == 1 || single == 2)
+			{
+				cout << "\n\nCell not empty\n\n";
+				anykey();
+			}
 		}
 	}
 	updatescreen(); // displays last move before results
@@ -177,4 +204,17 @@ void game::gameengine() // game "engine"
 game::game()
 {
 	firstmov = rand() % 2; // random begginer
+}
+
+
+void game::ai()
+{
+	srand(time(NULL));
+	int x = rand()%3;
+	int y = rand()%3;
+	if (tab[x][y] !='X' && tab[x][y] !='O')
+		tab[x][y] = 'X';
+	else
+		ai();
+	turn = 1;
 }
