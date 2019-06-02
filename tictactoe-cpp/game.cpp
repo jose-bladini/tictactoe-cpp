@@ -206,7 +206,7 @@ game::game()
 	firstmov = rand() % 2; // random begginer
 }
 
-
+ 
 void game::ai()
 {
 	srand(time(NULL));

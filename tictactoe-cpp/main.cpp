@@ -33,7 +33,7 @@ void newgame( int gametype ) // sts up a new game
 		system("CLS");
 		cout << "================== Mode =================\n\n";
 		cout << "What game mode do you choole ?" << endl;
-		cout << "1. Singleplayer " << endl;
+		cout << "1. Singleplayer " << endl; 
 		cout << "2. Multiplayer " << endl;
 		cin >> single;
 		while ( rounds <= 0 || rounds >= 1000 ) // dialog will be repeating until you type correct number
